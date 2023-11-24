@@ -6,8 +6,8 @@ const CONFIG = {
     role: "Machine Learning Engineer",
     bio: "Let's make Synergy together",
     email: "cyjun0304@naver.com",
-    linkedin: "https://www.linkedin.com/in/purplesand/",
-    github: "https://github.com/PurpleSand123",
+    linkedin: "purplesand",
+    github: "PurpleSand123",
     instagram: "",
   },
   projects: [
