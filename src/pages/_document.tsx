@@ -36,7 +36,6 @@ class MyDocument extends Document {
               />
             </>
           )}
-          {/* google analytics */}
         </Head>
         <body>
           <Main />
