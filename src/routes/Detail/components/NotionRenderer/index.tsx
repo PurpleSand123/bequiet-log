@@ -22,25 +22,7 @@ const _NotionRenderer = dynamic(
 )
 
 const Code = dynamic(() =>
-  import("react-notion-x/build/third-party/code").then(async (m) => {
-    await Promise.all([
-      import("prismjs/components/prism-markup-templating.js"),
-      import("prismjs/components/prism-markup.js"),
-      import("prismjs/components/prism-bash.js"),
-      import("prismjs/components/prism-c.js"),
-      import("prismjs/components/prism-cpp.js"),
-      import("prismjs/components/prism-docker.js"),
-      import("prismjs/components/prism-java.js"),
-      import("prismjs/components/prism-js-templates.js"),
-      import("prismjs/components/prism-git.js"),
-      import("prismjs/components/prism-markdown.js"),
-      import("prismjs/components/prism-python.js"),
-      import("prismjs/components/prism-sql.js"),
-      import("prismjs/components/prism-swift.js"),
-      import("prismjs/components/prism-yaml.js"),
-    ])
-    return m.Code
-  })
+  import("react-notion-x/build/third-party/code").then(async (m) => m.Code)
 )
 
 const Collection = dynamic(() =>
