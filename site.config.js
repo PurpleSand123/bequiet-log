@@ -21,6 +21,7 @@ const CONFIG = {
   blog: {
     title: "bequiet-log",
     description: "welcome to my tech blog!",
+    scheme: "system",
   },
 
   // CONFIG configration (required)
