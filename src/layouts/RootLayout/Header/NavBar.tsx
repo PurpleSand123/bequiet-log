@@ -1,16 +1,16 @@
 import styled from "@emotion/styled"
-import Link from "next/link"
 
 const NavBar: React.FC = () => {
-  const links = [{ id: 1, name: "About", to: "/about" }]
+  const aboutUrl = process.env.NEXT_PUBLIC_ABOUT_URL || "https://yongjun-cho.vercel.app/"
+
   return (
     <StyledWrapper className="">
       <ul>
-        {links.map((link) => (
-          <li key={link.id}>
-            <Link href={link.to}>{link.name}</Link>
-          </li>
-        ))}
+        <li>
+          <a href={aboutUrl} target="_blank" rel="noopener noreferrer">
+            About
+          </a>
+        </li>
       </ul>
     </StyledWrapper>
   )
