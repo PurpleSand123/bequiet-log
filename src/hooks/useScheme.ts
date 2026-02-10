@@ -34,7 +34,12 @@ const useScheme = (): [SchemeType, SetScheme] => {
         ? "dark"
         : "light"
       : data
-    setScheme(cachedScheme || defaultScheme)
+    // Defer queryClient.setQueryData past hydration - startTransition doesn't
+    // work here because React Query uses useSyncExternalStore which always
+    // triggers synchronous re-renders, bypassing transition priority.
+    setTimeout(() => {
+      setScheme(cachedScheme || defaultScheme)
+    }, 0)
   }, [])
 
   return [data, setScheme]

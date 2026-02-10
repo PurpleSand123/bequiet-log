@@ -1,4 +1,10 @@
-import React, { useState, useEffect, useRef, ReactNode } from "react"
+import React, {
+  startTransition,
+  useState,
+  useEffect,
+  useRef,
+  ReactNode,
+} from "react"
 import { ThemeProvider } from "./ThemeProvider"
 import useScheme from "src/hooks/useScheme"
 import Header from "./Header"
@@ -78,7 +84,9 @@ const RootLayout = ({ children }: Props) => {
   useEffect(() => {
     if (currentElementRef.current) {
       const clientHeight = currentElementRef.current.clientHeight
-      setBlogHeight(clientHeight)
+      startTransition(() => {
+        setBlogHeight(clientHeight)
+      })
     }
 
     window.addEventListener("scroll", scrollThrottle)
