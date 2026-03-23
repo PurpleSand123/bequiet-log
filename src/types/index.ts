@@ -1,6 +1,5 @@
 import { NextPage } from "next"
 import { AppProps } from "next/app"
-import type { MDXRemoteSerializeResult } from "next-mdx-remote"
 import { ReactElement, ReactNode } from "react"
 
 // TODO: refactor types
@@ -35,9 +34,7 @@ export type TPost = {
   thumbnail?: string | null
 }
 
-export type PostDetail = TPost & {
-  mdxSource: MDXRemoteSerializeResult
-}
+export type PostDetail = TPost
 
 export type TPosts = TPost[]
 

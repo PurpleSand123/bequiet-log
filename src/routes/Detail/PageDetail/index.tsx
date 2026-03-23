@@ -1,16 +1,16 @@
 import React from "react"
 import styled from "@emotion/styled"
 import MdxRenderer from "../components/MdxRenderer"
-import usePostQuery from "src/hooks/usePostQuery"
-type Props = {}
+import type { MDXRemoteSerializeResult } from "next-mdx-remote"
 
-const PageDetail: React.FC<Props> = () => {
-  const data = usePostQuery()
+type Props = {
+  mdxSource: MDXRemoteSerializeResult
+}
 
-  if (!data) return null
+const PageDetail: React.FC<Props> = ({ mdxSource }) => {
   return (
     <StyledWrapper>
-      <MdxRenderer mdxSource={data.mdxSource} />
+      <MdxRenderer mdxSource={mdxSource} />
     </StyledWrapper>
   )
 }

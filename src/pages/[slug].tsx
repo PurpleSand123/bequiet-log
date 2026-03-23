@@ -9,8 +9,9 @@ import { GetStaticProps } from "next"
 import { queryClient } from "src/libs/react-query"
 import { queryKey } from "src/constants/queryKey"
 import { dehydrate } from "@tanstack/react-query"
-import usePostQuery from "src/hooks/usePostQuery"
 import { FilterPostsOptions } from "src/libs/utils/notion/filterPosts"
+import { TPost } from "src/types"
+import type { MDXRemoteSerializeResult } from "next-mdx-remote"
 
 const filter: FilterPostsOptions = {
   acceptStatus: ["Public", "PublicOnDetail"],
@@ -27,13 +28,15 @@ export const getStaticPaths = async () => {
   }
 }
 
-export const getStaticProps: GetStaticProps = async (context) => {
+type DetailPageProps = {
+  post: TPost
+  mdxSource: MDXRemoteSerializeResult
+}
+
+export const getStaticProps: GetStaticProps<DetailPageProps> = async (context) => {
   const slug = context.params?.slug
 
   const posts = await getPosts()
-  const feedPosts = filterPosts(posts)
-  await queryClient.prefetchQuery(queryKey.posts(), () => feedPosts)
-
   const detailPosts = filterPosts(posts, filter)
   const postDetail = detailPosts.find((t: any) => t.slug === slug)
 
@@ -46,22 +49,20 @@ export const getStaticProps: GetStaticProps = async (context) => {
 
   const mdxSource = await getPostContent(postDetail.id)
 
-  await queryClient.prefetchQuery(queryKey.post(`${slug}`), () => ({
-    ...postDetail,
-    mdxSource,
-  }))
+  // Only put post metadata in React Query (small), not mdxSource (large)
+  await queryClient.prefetchQuery(queryKey.post(`${slug}`), () => postDetail)
 
   return {
     props: {
       dehydratedState: dehydrate(queryClient),
+      post: postDetail,
+      mdxSource,
     },
     revalidate: CONFIG.revalidateTime,
   }
 }
 
-const DetailPage: NextPageWithLayout = () => {
-  const post = usePostQuery()
-
+const DetailPage: NextPageWithLayout<DetailPageProps> = ({ post, mdxSource }) => {
   if (!post) return <CustomError />
 
   const image = CONFIG.ogImageGenerateURL
@@ -82,7 +83,7 @@ const DetailPage: NextPageWithLayout = () => {
   return (
     <>
       <MetaConfig {...meta} />
-      <Detail />
+      <Detail mdxSource={mdxSource} />
     </>
   )
 }

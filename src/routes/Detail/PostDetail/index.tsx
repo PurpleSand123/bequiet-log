@@ -6,10 +6,13 @@ import Category from "src/components/Category"
 import styled from "@emotion/styled"
 import MdxRenderer from "../components/MdxRenderer"
 import usePostQuery from "src/hooks/usePostQuery"
+import type { MDXRemoteSerializeResult } from "next-mdx-remote"
 
-type Props = {}
+type Props = {
+  mdxSource: MDXRemoteSerializeResult
+}
 
-const PostDetail: React.FC<Props> = () => {
+const PostDetail: React.FC<Props> = ({ mdxSource }) => {
   const data = usePostQuery()
 
   if (!data) return null
@@ -28,7 +31,7 @@ const PostDetail: React.FC<Props> = () => {
         )}
         {data.type[0] === "Post" && <PostHeader data={data} />}
         <div>
-          <MdxRenderer mdxSource={data.mdxSource} />
+          <MdxRenderer mdxSource={mdxSource} />
         </div>
         {data.type[0] === "Post" && (
           <>
