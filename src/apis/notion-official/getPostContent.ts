@@ -55,6 +55,38 @@ async function prefetchBlockTree(
   return blockMap
 }
 
+/**
+ * Escape bare angle brackets outside code blocks/inline code so MDX
+ * doesn't interpret them as JSX tags (e.g. `<break>`, `<img_token>`).
+ * Preserves standard Markdown-safe HTML tags.
+ */
+function escapeMdxAngleBrackets(md: string): string {
+  const lines = md.split("\n")
+  let inCodeBlock = false
+  const result: string[] = []
+
+  for (const line of lines) {
+    if (line.trimStart().startsWith("```")) {
+      inCodeBlock = !inCodeBlock
+      result.push(line)
+      continue
+    }
+    if (inCodeBlock) {
+      result.push(line)
+      continue
+    }
+    // Replace < with &lt; outside of inline code spans
+    // Then restore known safe HTML tags
+    result.push(
+      line.replace(/`[^`]*`|<(?![!/])/g, (match) => {
+        if (match.startsWith("`")) return match
+        return "\\<"
+      })
+    )
+  }
+  return result.join("\n")
+}
+
 // --- Main export ---
 
 export const getPostContent = async (
@@ -81,7 +113,9 @@ export const getPostContent = async (
 
   try {
     const mdBlocks = await n2m.pageToMarkdown(pageId)
-    const mdString = n2m.toMarkdownString(mdBlocks).parent
+    const mdString = escapeMdxAngleBrackets(
+      n2m.toMarkdownString(mdBlocks).parent
+    )
 
     const mdxSource = await serialize(mdString, {
       mdxOptions: {

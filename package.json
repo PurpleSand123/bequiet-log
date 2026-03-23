@@ -22,6 +22,7 @@
     "@vercel/analytics": "^1.5.0",
     "axios": ">=0.21.1",
     "cookies-next": "^2.1.2",
+    "dompurify": "^3.3.3",
     "mermaid": "^10.9.1",
     "next": "^13.4.9",
     "next-mdx-remote": "^6.0.0",
@@ -35,7 +36,12 @@
     "rehype-prism-plus": "^2.0.2",
     "remark-math": "^6.0.0"
   },
+  "resolutions": {
+    "react-cusdis/react": "^18.2.0",
+    "react-cusdis/react-dom": "^18.2.0"
+  },
   "devDependencies": {
+    "@next/env": "^13.4.9",
     "@types/gtag.js": "^0.0.12",
     "@types/node": "^18.11.15",
     "@types/react": "^18.0.26",
