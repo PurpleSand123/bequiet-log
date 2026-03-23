@@ -1,16 +1,16 @@
 import React from "react"
 import styled from "@emotion/styled"
-import MdxRenderer from "../components/MdxRenderer"
-import type { MDXRemoteSerializeResult } from "next-mdx-remote"
+import NotionRenderer from "../components/NotionRenderer"
+import usePostQuery from "src/hooks/usePostQuery"
+type Props = {}
 
-type Props = {
-  mdxSource: MDXRemoteSerializeResult
-}
+const PageDetail: React.FC<Props> = () => {
+  const data = usePostQuery()
 
-const PageDetail: React.FC<Props> = ({ mdxSource }) => {
+  if (!data) return null
   return (
     <StyledWrapper>
-      <MdxRenderer mdxSource={mdxSource} />
+      <NotionRenderer recordMap={data.recordMap} />
     </StyledWrapper>
   )
 }

@@ -2,6 +2,7 @@ import { CONFIG } from "site.config"
 import Tag from "src/components/Tag"
 import { TPost } from "src/types"
 import { formatDate } from "src/libs/utils"
+import Image from "next/image"
 import React from "react"
 import styled from "@emotion/styled"
 
@@ -19,13 +20,12 @@ const PostHeader: React.FC<Props> = ({ data }) => {
             {data.author && data.author[0] && data.author[0].name && (
               <>
                 <div className="author">
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img
+                  <Image
+                    css={{ borderRadius: "50%" }}
                     src={data.author[0].profile_photo || CONFIG.profile.image}
                     alt="profile_photo"
                     width={24}
                     height={24}
-                    style={{ borderRadius: "50%" }}
                   />
                   <div className="">{data.author[0].name}</div>
                 </div>
@@ -50,13 +50,11 @@ const PostHeader: React.FC<Props> = ({ data }) => {
           </div>
           {data.thumbnail && (
             <div className="thumbnail">
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img
+              <Image
                 src={data.thumbnail}
+                css={{ objectFit: "cover" }}
+                fill
                 alt={data.title}
-                loading="lazy"
-                decoding="async"
-                style={{ position: "absolute", top: 0, left: 0, width: "100%", height: "100%", objectFit: "cover" }}
               />
             </div>
           )}

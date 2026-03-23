@@ -3,15 +3,14 @@ import { filterPosts } from "src/libs/utils/notion"
 import { CONFIG } from "site.config"
 import { NextPageWithLayout } from "../types"
 import CustomError from "src/routes/Error"
-import { getPostContent, getPosts } from "src/apis"
+import { getRecordMap, getPosts } from "src/apis"
 import MetaConfig from "src/components/MetaConfig"
 import { GetStaticProps } from "next"
 import { queryClient } from "src/libs/react-query"
 import { queryKey } from "src/constants/queryKey"
 import { dehydrate } from "@tanstack/react-query"
+import usePostQuery from "src/hooks/usePostQuery"
 import { FilterPostsOptions } from "src/libs/utils/notion/filterPosts"
-import { TPost } from "src/types"
-import type { MDXRemoteSerializeResult } from "next-mdx-remote"
 
 const filter: FilterPostsOptions = {
   acceptStatus: ["Public", "PublicOnDetail"],
@@ -28,15 +27,13 @@ export const getStaticPaths = async () => {
   }
 }
 
-type DetailPageProps = {
-  post: TPost
-  mdxSource: MDXRemoteSerializeResult
-}
-
-export const getStaticProps: GetStaticProps<DetailPageProps> = async (context) => {
+export const getStaticProps: GetStaticProps = async (context) => {
   const slug = context.params?.slug
 
   const posts = await getPosts()
+  const feedPosts = filterPosts(posts)
+  await queryClient.prefetchQuery(queryKey.posts(), () => feedPosts)
+
   const detailPosts = filterPosts(posts, filter)
   const postDetail = detailPosts.find((t: any) => t.slug === slug)
 
@@ -47,27 +44,30 @@ export const getStaticProps: GetStaticProps<DetailPageProps> = async (context) =
     }
   }
 
-  const mdxSource = await getPostContent(postDetail.id)
+  const recordMap = await getRecordMap(postDetail.id)
 
-  // Only put post metadata in React Query (small), not mdxSource (large)
-  await queryClient.prefetchQuery(queryKey.post(`${slug}`), () => postDetail)
+  await queryClient.prefetchQuery(queryKey.post(`${slug}`), () => ({
+    ...postDetail,
+    recordMap,
+  }))
 
   return {
     props: {
       dehydratedState: dehydrate(queryClient),
-      post: postDetail,
-      mdxSource,
     },
     revalidate: CONFIG.revalidateTime,
   }
 }
 
-const DetailPage: NextPageWithLayout<DetailPageProps> = ({ post, mdxSource }) => {
+const DetailPage: NextPageWithLayout = () => {
+  const post = usePostQuery()
+
   if (!post) return <CustomError />
 
-  const image = CONFIG.ogImageGenerateURL
-    ? `${CONFIG.ogImageGenerateURL}/${encodeURIComponent(post.title)}.png`
-    : post.thumbnail || undefined
+  const image =
+    post.thumbnail ??
+    CONFIG.ogImageGenerateURL ??
+    `${CONFIG.ogImageGenerateURL}/${encodeURIComponent(post.title)}.png`
 
   const date = post.date?.start_date || post.createdTime || ""
 
@@ -83,7 +83,7 @@ const DetailPage: NextPageWithLayout<DetailPageProps> = ({ post, mdxSource }) =>
   return (
     <>
       <MetaConfig {...meta} />
-      <Detail mdxSource={mdxSource} />
+      <Detail />
     </>
   )
 }

@@ -4,15 +4,12 @@ import Footer from "./PostFooter"
 import CommentBox from "./CommentBox"
 import Category from "src/components/Category"
 import styled from "@emotion/styled"
-import MdxRenderer from "../components/MdxRenderer"
+import NotionRenderer from "../components/NotionRenderer"
 import usePostQuery from "src/hooks/usePostQuery"
-import type { MDXRemoteSerializeResult } from "next-mdx-remote"
 
-type Props = {
-  mdxSource: MDXRemoteSerializeResult
-}
+type Props = {}
 
-const PostDetail: React.FC<Props> = ({ mdxSource }) => {
+const PostDetail: React.FC<Props> = () => {
   const data = usePostQuery()
 
   if (!data) return null
@@ -31,7 +28,7 @@ const PostDetail: React.FC<Props> = ({ mdxSource }) => {
         )}
         {data.type[0] === "Post" && <PostHeader data={data} />}
         <div>
-          <MdxRenderer mdxSource={mdxSource} />
+          <NotionRenderer recordMap={data.recordMap} />
         </div>
         {data.type[0] === "Post" && (
           <>

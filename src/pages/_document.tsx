@@ -38,21 +38,6 @@ class MyDocument extends Document {
           )}
         </Head>
         <body>
-          <script
-            dangerouslySetInnerHTML={{
-              __html: `
-                (function() {
-                  try {
-                    var scheme = document.cookie.match(/scheme=(light|dark)/);
-                    var theme = scheme ? scheme[1] : (
-                      window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'
-                    );
-                    document.documentElement.setAttribute('data-scheme', theme);
-                  } catch(e) {}
-                })();
-              `,
-            }}
-          />
           <Main />
           <NextScript />
         </body>

@@ -1,1 +1,1 @@
-export * from "./notion-official"
+export * from "./notion-client"

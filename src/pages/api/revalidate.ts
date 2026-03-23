@@ -15,11 +15,7 @@ export default async function handler(
 
   try {
     if (path && typeof path === "string") {
-      const safePath = path.startsWith("/") ? path : `/${path}`
-      if (!/^\/[a-zA-Z0-9\-_\/]+$/.test(safePath)) {
-        return res.status(400).json({ message: "Invalid path" })
-      }
-      await res.revalidate(safePath)
+      await res.revalidate(path)
     } else {
       const posts = await getPosts()
       const revalidateRequests = posts.map((row) =>

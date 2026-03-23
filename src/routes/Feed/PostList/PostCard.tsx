@@ -3,6 +3,7 @@ import { CONFIG } from "site.config"
 import { formatDate } from "src/libs/utils"
 import Tag from "../../../components/Tag"
 import { TPost } from "../../../types"
+import Image from "next/image"
 import Category from "../../../components/Category"
 import styled from "@emotion/styled"
 
@@ -23,13 +24,11 @@ const PostCard: React.FC<Props> = ({ data }) => {
         )}
         {data.thumbnail && (
           <div className="thumbnail">
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
+            <Image
               src={data.thumbnail}
+              fill
               alt={data.title}
-              loading="lazy"
-              decoding="async"
-              style={{ position: "absolute", top: 0, left: 0, width: "100%", height: "100%", objectFit: "cover" }}
+              css={{ objectFit: "cover" }}
             />
           </div>
         )}
