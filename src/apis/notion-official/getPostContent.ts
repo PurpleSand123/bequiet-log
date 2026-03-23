@@ -75,10 +75,9 @@ function escapeMdxAngleBrackets(md: string): string {
       result.push(line)
       continue
     }
-    // Replace < with &lt; outside of inline code spans
-    // Then restore known safe HTML tags
+    // Escape all < outside of inline code spans
     result.push(
-      line.replace(/`[^`]*`|<(?![!/])/g, (match) => {
+      line.replace(/`[^`]*`|</g, (match) => {
         if (match.startsWith("`")) return match
         return "\\<"
       })
