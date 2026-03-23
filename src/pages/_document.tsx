@@ -6,6 +6,11 @@ class MyDocument extends Document {
     return (
       <Html lang={CONFIG.lang}>
         <Head>
+          <style
+            dangerouslySetInnerHTML={{
+              __html: `html[data-scheme="dark"]{color-scheme:dark}html[data-scheme="dark"] body{background-color:#191919!important;color:#EDEDEF!important}html[data-scheme="light"]{color-scheme:light}html[data-scheme="light"] body{background-color:#f9f9f9!important;color:#1C2024!important}#__next{opacity:0}#__next.ready{opacity:1}`,
+            }}
+          />
           <link rel="icon" href="/favicon.ico" />
           <link
             rel="apple-touch-icon"
@@ -38,6 +43,11 @@ class MyDocument extends Document {
           )}
         </Head>
         <body>
+          <script
+            dangerouslySetInnerHTML={{
+              __html: `(function(){try{var c=document.cookie.match(/(?:^|; )scheme=([^;]*)/);var s=c?c[1]:null;if(!s){s=window.matchMedia&&window.matchMedia("(prefers-color-scheme:dark)").matches?"dark":"light"}document.documentElement.setAttribute("data-scheme",s)}catch(e){}}())`,
+            }}
+          />
           <Main />
           <NextScript />
         </body>
