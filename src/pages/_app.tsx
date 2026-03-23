@@ -3,7 +3,6 @@ import { QueryClient } from "@tanstack/react-query"
 import { AppPropsWithLayout } from "../types"
 import { Hydrate, QueryClientProvider } from "@tanstack/react-query"
 import { RootLayout } from "src/layouts"
-import { Analytics } from "@vercel/analytics/next"
 
 function App({ Component, pageProps }: AppPropsWithLayout) {
   const [queryClient] = useState(() => new QueryClient())
@@ -14,7 +13,6 @@ function App({ Component, pageProps }: AppPropsWithLayout) {
       <Hydrate state={pageProps.dehydratedState}>
         <RootLayout>{getLayout(<Component {...pageProps} />)}</RootLayout>
       </Hydrate>
-      <Analytics />
     </QueryClientProvider>
   )
 }
