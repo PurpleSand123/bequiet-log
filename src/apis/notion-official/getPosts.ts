@@ -73,15 +73,15 @@ function mapPageToPost(page: PageObjectResponse): TPost {
     date: date || { start_date: page.created_time },
     type: type ? [type as TPost["type"][0]] : ["Post"],
     slug,
-    tags: tags.length > 0 ? tags : undefined,
-    category: category ? [category] : undefined,
-    summary: summary || undefined,
-    author: undefined,
+    tags: tags.length > 0 ? tags : [],
+    category: category ? [category] : [],
+    summary: summary || "",
+    author: [],
     title,
     status: status ? [status as TPost["status"][0]] : ["Public"],
     createdTime: new Date(page.created_time).toString(),
     fullWidth: false,
-    thumbnail,
+    thumbnail: thumbnail ?? null,
   }
 }
 
@@ -94,7 +94,7 @@ export const getPosts = async (): Promise<TPosts> => {
     const response: QueryDatabaseResponse = await notion.databases.query({
       database_id: DATABASE_ID,
       start_cursor: cursor,
-      sorts: [{ property: "Date", direction: "descending" }],
+      sorts: [{ property: "date", direction: "descending" }],
     })
 
     for (const page of response.results) {
