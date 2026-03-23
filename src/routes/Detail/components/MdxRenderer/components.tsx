@@ -1,6 +1,5 @@
 import React from "react"
 import type { MDXComponents } from "mdx/types"
-import Image from "next/image"
 import MermaidBlock from "./MermaidBlock"
 import Callout from "./Callout"
 
@@ -16,12 +15,13 @@ export const mdxComponents: MDXComponents = {
     return <pre {...props} />
   },
   img: (props: React.ComponentPropsWithoutRef<"img">) => (
-    <Image
+    // eslint-disable-next-line @next/next/no-img-element
+    <img
       src={props.src || ""}
       alt={props.alt || ""}
-      width={800}
-      height={400}
-      style={{ width: "100%", height: "auto" }}
+      loading="lazy"
+      decoding="async"
+      style={{ maxWidth: "100%", height: "auto" }}
     />
   ),
   Callout,

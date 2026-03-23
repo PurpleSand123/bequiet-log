@@ -1,11 +1,11 @@
 module.exports = {
   images: {
-    domains: [
-      'www.notion.so',
-      'prod-files-secure.s3.us-west-2.amazonaws.com',
-      's3-us-west-2.amazonaws.com',
-      'lh5.googleusercontent.com',
-      'images.unsplash.com',
+    remotePatterns: [
+      { protocol: 'https', hostname: 'www.notion.so' },
+      { protocol: 'https', hostname: 'prod-files-secure.s3.us-west-2.amazonaws.com' },
+      { protocol: 'https', hostname: 's3-us-west-2.amazonaws.com' },
+      { protocol: 'https', hostname: 'lh5.googleusercontent.com' },
+      { protocol: 'https', hostname: 'images.unsplash.com' },
     ],
   },
 }

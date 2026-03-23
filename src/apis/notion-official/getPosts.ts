@@ -85,7 +85,18 @@ function mapPageToPost(page: PageObjectResponse): TPost {
   }
 }
 
+// In-memory cache for build time — getPosts() is called 28+ times during
+// a single build (getStaticPaths + getStaticProps for every page).
+// Cache lives for 5 minutes to cover the entire build duration.
+let cachedPosts: TPosts | null = null
+let cacheTimestamp = 0
+const CACHE_TTL = 5 * 60 * 1000
+
 export const getPosts = async (): Promise<TPosts> => {
+  if (cachedPosts && Date.now() - cacheTimestamp < CACHE_TTL) {
+    return cachedPosts
+  }
+
   const posts: TPosts = []
   let hasMore = true
   let cursor: string | undefined = undefined
@@ -106,5 +117,7 @@ export const getPosts = async (): Promise<TPosts> => {
     cursor = response.next_cursor ?? undefined
   }
 
+  cachedPosts = posts
+  cacheTimestamp = Date.now()
   return posts
 }
