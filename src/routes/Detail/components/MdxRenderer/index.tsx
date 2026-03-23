@@ -24,6 +24,10 @@ export default MdxRenderer
 const StyledWrapper = styled.div`
   line-height: 1.8;
   font-size: 1rem;
+  overflow-wrap: break-word;
+  word-break: break-word;
+  max-width: 100%;
+  overflow-x: hidden;
 
   h1,
   h2,
@@ -88,12 +92,15 @@ const StyledWrapper = styled.div`
 
   img {
     max-width: 100%;
+    height: auto;
     border-radius: 0.5rem;
     margin: 1em 0;
   }
 
   table {
+    display: block;
     width: 100%;
+    overflow-x: auto;
     border-collapse: collapse;
     margin: 1em 0;
   }
