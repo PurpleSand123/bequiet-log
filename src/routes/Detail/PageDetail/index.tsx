@@ -1,6 +1,6 @@
 import React from "react"
 import styled from "@emotion/styled"
-import NotionRenderer from "../components/NotionRenderer"
+import MdxRenderer from "../components/MdxRenderer"
 import usePostQuery from "src/hooks/usePostQuery"
 type Props = {}
 
@@ -10,7 +10,7 @@ const PageDetail: React.FC<Props> = () => {
   if (!data) return null
   return (
     <StyledWrapper>
-      <NotionRenderer recordMap={data.recordMap} />
+      <MdxRenderer mdxSource={data.mdxSource} />
     </StyledWrapper>
   )
 }

@@ -32,7 +32,8 @@ const CONFIG = {
   
   // notion configuration (required)
   notionConfig: {
-    pageId: process.env.NOTION_PAGE_ID,
+    apiKey: process.env.NOTION_API_KEY,
+    databaseId: process.env.NOTION_DATABASE_ID,
   },
 
   // plugin configuration (optional)

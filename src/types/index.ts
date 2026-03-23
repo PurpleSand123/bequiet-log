@@ -1,6 +1,6 @@
 import { NextPage } from "next"
 import { AppProps } from "next/app"
-import { ExtendedRecordMap } from "notion-types"
+import type { MDXRemoteSerializeResult } from "next-mdx-remote"
 import { ReactElement, ReactNode } from "react"
 
 // TODO: refactor types
@@ -32,11 +32,11 @@ export type TPost = {
   status: TPostStatus[]
   createdTime: string
   fullWidth: boolean
-  thumbnail?: string
+  thumbnail?: string | null
 }
 
 export type PostDetail = TPost & {
-  recordMap: ExtendedRecordMap
+  mdxSource: MDXRemoteSerializeResult
 }
 
 export type TPosts = TPost[]
