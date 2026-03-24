@@ -4,6 +4,7 @@ import { AppPropsWithLayout } from "../types"
 import { Hydrate, QueryClientProvider } from "@tanstack/react-query"
 import { RootLayout } from "src/layouts"
 import { Analytics } from "@vercel/analytics/next"
+import { SpeedInsights } from "@vercel/speed-insights/next"
 
 function App({ Component, pageProps }: AppPropsWithLayout) {
   const [queryClient] = useState(() => new QueryClient())
@@ -15,6 +16,7 @@ function App({ Component, pageProps }: AppPropsWithLayout) {
         <RootLayout>{getLayout(<Component {...pageProps} />)}</RootLayout>
       </Hydrate>
       <Analytics />
+      <SpeedInsights />
     </QueryClientProvider>
   )
 }
